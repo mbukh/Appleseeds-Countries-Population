@@ -1,0 +1,11 @@
+@import url(./normalize.css);
+@import url(./reset.local.css);
+
+a.continent {
+    display: inline-block;
+    margin-inline-end: 1em;
+}
+a.country {
+    display: block;
+    margin-inline-end: 1em;
+}
