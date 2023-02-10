@@ -1,11 +1,28 @@
 @import url(./normalize.css);
 @import url(./reset.local.css);
 
+div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    border: 1px solid #ccc;
+    margin: 1em;
+}
+
 a.continent {
     display: inline-block;
-    margin-inline-end: 1em;
+    margin: 0.5em;
+    padding: 0.2em;
+    border: 1px solid #ccc;
 }
 a.country {
     display: block;
-    margin-inline-end: 1em;
+    margin: 0.5em;
+    border-bottom: 1px solid #888;
+}
+a.city {
+    display: block;
+    margin: 0.3em;
+    padding: 0.2em;
+    border-bottom: 1px dashed #ccc;
 }

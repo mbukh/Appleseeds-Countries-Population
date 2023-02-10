@@ -1,8 +1,5 @@
-window.addEventListener("load", initChart);
-
-function initChart() {
-    const ctx = document.getElementById("myChart");
-    new Chart(ctx, {
+function initChart(ctx) {
+    return new Chart(ctx, {
         type: "bar",
         data: {
             labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -23,3 +20,5 @@ function initChart() {
         },
     });
 }
+
+export default { initChart };

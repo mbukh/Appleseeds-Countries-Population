@@ -1,10 +1,9 @@
 // api request sequence and commands
 // by Artyom Ribakov
-// https://restcountries.com/#api-endpoints-v3-capital-city
-// https://restcountries.com/v3.1/region/europe
 
 async function getAllCountries() {
-    const api = "./assets/js/all.json";
+    // https://restcountries.com/v3.1/all
+    const api = "./assets/js/countriesWithContinents.json";
     const options = {
         method: "GET",
         headers: {
@@ -39,12 +38,40 @@ function getCountriesByContinent(countries, continent) {
         .map((country) => country.name.common);
 }
 
+async function getAllCountriesWithCities() {
+    // https://countriesnow.space/api/v0.1/countries
+    const api = "./assets/js/countriesWithCities.json";
+    const options = {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+        },
+    };
+
+    try {
+        const response = await fetch(api, options);
+        if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        return data.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function getCitiesByCountry(country) {
+    return cities
+        .filter((city) => city.country === country)
+        .map((city) => country.name.common);
+}
+
 export default {
     getAllCountries,
     getContinentsFromAllCountries,
     getCountriesByContinent,
+    getCitiesByCountry,
 };
-
 // fetch("https://restcountries.com/v3.1/region/europe", {
 //     method: "GET",
 //     headers: {
