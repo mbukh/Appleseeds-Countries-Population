@@ -1,3 +1,6 @@
+// chart.js library imported in html
+// https://cdn.jsdelivr.net/npm/chart.js
+
 function initChart(ctx) {
     return new Chart(ctx, {
         type: "bar",

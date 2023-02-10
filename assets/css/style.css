@@ -10,6 +10,7 @@ div {
 }
 
 a.continent {
+    font-size: 1.1em;
     display: inline-block;
     margin: 0.5em;
     padding: 0.2em;
@@ -21,8 +22,9 @@ a.country {
     border-bottom: 1px solid #888;
 }
 a.city {
+    font-size: 0.9em;
     display: block;
     margin: 0.3em;
-    padding: 0.2em;
+    padding: 0.1em;
     border-bottom: 1px dashed #ccc;
 }
