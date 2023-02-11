@@ -1,5 +1,4 @@
 // api request sequence and commands
-// by Artyom Ribakov
 
 async function getAllCountriesWithContinent() {
     // https://restcountries.com/v3.1/all
@@ -20,21 +19,6 @@ async function getAllCountriesWithContinent() {
     } catch (err) {
         console.log(err);
     }
-}
-
-function getContinentsFromAllCountries(countries) {
-    return Array.from(
-        countries.reduce(
-            (continents, country) => continents.add(country.region),
-            new Set()
-        )
-    );
-}
-
-function getCountriesByContinent(countries, continent) {
-    return countries
-        .filter((country) => country.region === continent)
-        .map((country) => country.name.common);
 }
 
 async function getAllCountriesWithPopulation() {
@@ -79,16 +63,8 @@ async function getAllCitiesWithPopulation() {
     }
 }
 
-function getCitiesByCountry(allCountriesWithCities, countryName) {
-    return allCountriesWithCities.filter(
-        (country) => country.country === countryName
-    )[0].cities;
-}
-
 export default {
     getAllCountriesWithContinent,
-    getContinentsFromAllCountries,
-    getCountriesByContinent,
     getAllCountriesWithPopulation,
     getAllCitiesWithPopulation,
 };

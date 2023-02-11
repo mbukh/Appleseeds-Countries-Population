@@ -28,3 +28,13 @@ a.city {
     padding: 0.1em;
     border-bottom: 1px dashed #ccc;
 }
+
+a span ~ .drop-down {
+    display: none;
+    position: absolute;
+}
+a span:hover ~ .drop-down {
+    display: block;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,69 +1,87 @@
-import api from "./api.js";
+import dataManager from "./dataManager.js";
 import uiHTML from "./uiHTML.js";
-import chart from "./chart.js";
-import db from "./db.js";
-
-const ctx = document.getElementById("myChart");
-
-const allCountriesWithContinents = await api.getAllCountriesWithContinent();
-const allCountriesWithPopulation = await api.getAllCountriesWithPopulation();
-const allCitiesWithPopulation = await api.getAllCitiesWithPopulation();
+import uiChart from "./uiChart.js";
 
 //
-// continents
-
-const htmlContinentsDiv = document.createElement("div");
-const continents = api.getContinentsFromAllCountries(
-    allCountriesWithContinents
-);
-const continentsButtons = uiHTML.newElementsFromList(continents, {
-    elementType: "a",
-    classList: ["continent"],
-});
-htmlContinentsDiv.prepend(...continentsButtons);
-document.body.prepend(htmlContinentsDiv);
+(function doContinents() {
+    const continents = dataManager.getContinents();
+    uiHTML.updateContinentsButtons(continents);
+})();
 
 //
-// countries
-
-const continent = continents[2]; // Oceania - change with event
-const countriesOfContinent = api.getCountriesByContinent(
-    allCountriesWithContinents,
-    continent
-);
-const countriesButtons = uiHTML.newElementsFromList(countriesOfContinent, {
-    elementType: "a",
-    classList: ["country"],
-});
-
-const htmlCountriesDiv = document.createElement("div");
-htmlCountriesDiv.append(...countriesButtons);
-htmlContinentsDiv.after(htmlCountriesDiv);
+function doCountries(continent) {
+    const countriesOfContinent = dataManager.getCountriesOfContinent(continent);
+    uiHTML.updateCountriesButtons(countriesOfContinent);
+    activateCountriesButtons();
+}
 
 //
-// cities
+function doCities(country) {
+    const citiesOfCountry = dataManager.getCitiesOfCountry(country);
+    uiHTML.updateCitiesButtons(citiesOfCountry);
+    activateCitiesChart();
+}
 
-// // Fiji - change with event
-// const country = countriesOfContinent[3];
-
-// const allCountriesWithCities = await api.getAllCountriesWithCities();
-// const citiesOfCountry = api.getCitiesByCountry(allCountriesWithCities, country);
-// const citiesButtons = uiHTML.newElementsFromList(citiesOfCountry, {
-//     elementType: "a",
-//     classList: ["city"],
-// });
-// const htmlCitiesDiv = document.createElement("div");
-// htmlCitiesDiv.append(...citiesButtons);
-// htmlCountriesDiv.after(htmlCitiesDiv);
-
-// chart ui
-
-chart.initChart(ctx);
-
+// =============================================
 //
-//db
+// Event listeners
+//
+// =============================================
 
-db.writeDataToDb(allCountriesWithCities);
-const newData = await db.getDataFromDb();
-console.log(typeof newData);
-db.getLocalStorageSize();
+(function activateContinentsButtons() {
+    document.querySelector("#continents").addEventListener("click", (e) => {
+        if (!e.target.classList.contains("continent")) return;
+        console.log(`Getting countries of ${e.target.innerText}`);
+        doCountries(e.target.innerText);
+        uiHTML.clearElement(document.querySelector("#cities"));
+    });
+})();
+
+function activateCountriesButtons() {
+    document.querySelector("#countries").addEventListener("click", (e) => {
+        if (!e.target.classList.contains("country")) return;
+        console.log(`Getting cities of ${e.target.dataset.name}`);
+        doCities(e.target.dataset.name);
+    });
+}
+
+function activateCountriesChart() {
+    document.querySelector("#countries").addEventListener("click", (e) => {
+        if (
+            !e.target.parentElement.classList.contains("country") ||
+            e.target.tagName.toLowerCase() !== "span"
+        )
+            return;
+
+        console.log(
+            `Getting population by year ${e.target.innerText} for ${e.target.parentElement.dataset.name}`
+        );
+        // updateChart();
+    });
+}
+
+function activateCitiesChart() {
+    document.querySelector("#cities").addEventListener("click", (e) => {
+        if (!e.target.classList.contains("city")) return;
+        console.log(`Getting population of ${e.target.dataset.name}`);
+        const cityData = dataManager.getPopulationOfCity(e.target.dataset.name);
+        console.log(cityData);
+        const options = {
+            plugins: { title: { text: cityData["city"], display: true } },
+            data: {
+                labels: cityData["populationCounts"].map((data) =>
+                    Math.round(data["year"])
+                ),
+                datasets: [
+                    {
+                        label: "population",
+                        data: cityData["populationCounts"].map(
+                            (data) => data["value"]
+                        ),
+                    },
+                ],
+            },
+        };
+        uiChart.updateChart(options);
+    });
+}
