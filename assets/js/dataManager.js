@@ -163,9 +163,9 @@ function getPopulationOfCity(cityName) {
     return filterCitiesByNames(allCitiesWithPopulation, [cityName])[0];
 }
 
-function getAllCountriesNames(data) {}
+// function getAllCountriesNames(data) {}
 
-function getAllCitiesNames(data) {}
+// function getAllCitiesNames(data) {}
 
 export default {
     loadAllDataFromAPIs,
@@ -173,8 +173,8 @@ export default {
     getContinents,
     getCountriesWithCodes,
     getCountryNamesOfContinent,
-    getAllCountriesNames,
-    getAllCitiesNames,
+    // getAllCountriesNames,
+    // getAllCitiesNames,
     filterCountriesByNames,
     getCitiesOfCountry,
     getCountriesOfContinent,
