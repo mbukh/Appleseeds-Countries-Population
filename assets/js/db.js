@@ -17,7 +17,7 @@ function clearDB() {
 }
 
 function getLocalStorageSize() {
-    var _lsTotal = 0,
+    let _lsTotal = 0,
         _xLen,
         _x;
     for (_x in localStorage) {

@@ -1,40 +1,182 @@
 @import url(./normalize.css);
 @import url(./reset.local.css);
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
-div {
+html {
+    font-family: "Roboto", sans-serif;
+}
+
+div#map {
+    max-width: 800px;
+    margin: auto;
+}
+
+div#continents,
+div#countries,
+div#cities {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     border: 1px solid #ccc;
     margin: 1em;
+    position: relative;
+}
+
+div#cities {
+    padding-bottom: 2em;
+}
+div#cities::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, white);
+    height: 2em;
+    width: 100%;
 }
 
 a.continent {
     font-size: 1.1em;
     display: inline-block;
-    margin: 0.5em;
+    margin: 0.4em;
     padding: 0.2em;
     border: 1px solid #ccc;
 }
-a.country {
+a.country,
+a.city {
     display: block;
     margin: 0.5em;
+    position: relative;
+}
+
+a span:last-of-type::after {
+    content: "\25BE";
+}
+
+a.country span:first-of-type {
     border-bottom: 1px solid #888;
 }
+a.country span:last-of-type {
+    border-bottom: 1px dotted #aaa;
+}
+
 a.city {
     font-size: 0.9em;
-    display: block;
-    margin: 0.3em;
-    padding: 0.1em;
-    border-bottom: 1px dashed #ccc;
+    padding: 0.2em;
 }
 
 a span ~ .drop-down {
-    display: none;
     position: absolute;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    transform: translateY(-50%);
+    position: absolute;
+    background: #fff;
+    border-bottom: 1px dashed #ccc;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 0.3em;
+    padding: 0.2em;
+    border: 2px solid #ccc;
+    display: none;
 }
-a span:hover ~ .drop-down {
-    display: block;
+a span:last-of-type:hover ~ .drop-down {
+    display: grid;
+}
+
+/* ========== */
+/*            */
+/*  Loading   */
+/*   screen   */
+/*            */
+/* ========== */
+
+#loadingScreen {
+    position: absolute;
+    z-index: 99;
+    width: 100vw;
+    height: 100vh;
+    opacity: 1;
+    transition: 0.5s opacity;
+}
+#loadingScreen.hide {
+    opacity: 0;
+}
+
+/* ========= */
+/*           */
+/*  Spinner  */
+/*           */
+/* ========= */
+
+#spinner {
+    position: absolute;
+    z-index: 101;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    color: #777;
+    border: none;
+}
+
+#spinner::after {
+    content: "";
+    width: 80px;
+    height: 80px;
+    border: 2px solid #f3f3f3;
+    border-top: 3px solid #f25a41;
+    border-radius: 100%;
+    will-change: transform;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== */
+/*            */
+/*  Progress  */
+/*    bar     */
+/*            */
+/* ========== */
+
+#myProgress {
+    width: 100%;
+    background-color: grey;
+}
+
+#myBar {
+    width: 1%;
+    height: 30px;
+    background-color: #1f7c39a9;
+    will-change: width;
+    animation: progress 5s forwards linear;
+}
+
+@keyframes progress {
+    10% {
+        width: 5%;
+    }
+    30% {
+        width: 35%;
+    }
+    50% {
+        width: 50%;
+    }
+    70% {
+        width: 85%;
+    }
+    90% {
+        width: 93%;
+    }
+    100% {
+        width: 100%;
+    }
 }

@@ -10,14 +10,108 @@ import uiHTML from "./uiHTML.js";
 
 let myChart, chartCtx;
 
-function updateChart(options) {
-    myChart = checkChartAndCanvas().myChart;
-    console.log(options);
-    myChart.data.labels = [...options.data.labels];
-    myChart.data.datasets = [...options.data.datasets];
-    // myChart.options.plugins = options.plugins;
-    // myChart.reset();
+function updateChart(config) {
+    if (myChart?.ctx && config.type !== myChart.config.type) {
+        console.log(config.type, myChart);
+        myChart.destroy();
+    }
+
+    if (!myChart?.ctx) return setNewChart(config);
+
+    myChart.config.options = config.options;
+    myChart.config.data = config.data;
     myChart.update();
+
+    // myChart.reset();
+    // console.log(config);
+    // myChart.update();
+}
+
+function setNewChart(config) {
+    if (!document.querySelector("#myChart")) {
+        chartCtx = uiHTML.newDOMElement("canvas", {
+            parent: document.body,
+            id: "myChart",
+        });
+    }
+    if (!myChart?.ctx) {
+        myChart = initChart(chartCtx, config);
+    }
+    return myChart;
+}
+
+function initChart(ctx, config) {
+    return new Chart(ctx, config);
+}
+
+function cityChartFromData(countryData) {
+    const config = {
+        type: countryData["populationCounts"].length > 1 ? "line" : "bar",
+        data: {
+            labels: countryData["populationCounts"].map((data) => data["year"]),
+            datasets: [
+                {
+                    label: "population",
+                    data: countryData["populationCounts"].map((data) =>
+                        Math.round(data["value"])
+                    ),
+                    borderColor: uiHTML.generateColorFromString(
+                        countryData["city"],
+                        0.8
+                    ),
+                    backgroundColor: uiHTML.generateColorFromString(
+                        countryData["city"],
+                        0.3
+                    ),
+                    fill: true,
+                    radius: 8,
+                    hoverRadius: 12,
+                    borderWidth: 1,
+                    hoverBorderWidth: 2,
+                },
+            ],
+        },
+        options: {
+            plugins: { title: { text: countryData["city"], display: true } },
+            pointBackgroundColor: "#fff",
+        },
+    };
+    updateChart(config);
+}
+
+function countryChartFromData(countryData) {
+    const config = {
+        type: countryData["populationCounts"].length > 1 ? "line" : "bar",
+        data: {
+            labels: countryData["populationCounts"].map((data) => data["year"]),
+            datasets: [
+                {
+                    label: "population",
+                    data: countryData["populationCounts"].map((data) =>
+                        Math.round(data["value"])
+                    ),
+                    borderColor: uiHTML.generateColorFromString(
+                        countryData["country"],
+                        0.8
+                    ),
+                    backgroundColor: uiHTML.generateColorFromString(
+                        countryData["country"],
+                        0.3
+                    ),
+                    fill: true,
+                    radius: 8,
+                    hoverRadius: 12,
+                    borderWidth: 1,
+                    hoverBorderWidth: 2,
+                },
+            ],
+        },
+        options: {
+            plugins: { title: { text: countryData["country"], display: true } },
+            pointBackgroundColor: "#fff",
+        },
+    };
+    updateChart(config);
 }
 
 // function addData(labels, dataset) {
@@ -36,44 +130,4 @@ function updateChart(options) {
 //     myChart.update();
 // }
 
-function initChart(ctx) {
-    return new Chart(ctx, {
-        type: "bar",
-        plugins: {
-            title: {
-                display: true,
-                text: "Chart.js",
-            },
-        },
-        data: {
-            labels: ["A"],
-            datasets: [
-                {
-                    label: "population",
-                    data: ["1"],
-                    borderWidth: 1,
-                },
-            ],
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    });
-}
-
-function checkChartAndCanvas() {
-    if (!document.querySelector("#myChart")) {
-        chartCtx = uiHTML.newDOMElement("canvas", {
-            parent: document.body,
-            id: "myChart",
-        });
-        myChart = initChart(chartCtx);
-    }
-    return { myChart, chartCtx };
-}
-
-export default { initChart, updateChart };
+export default { updateChart, cityChartFromData, countryChartFromData };
