@@ -55,7 +55,7 @@ function saveDataToLocalStorage() {
     db.writeDataToDb("allCountriesWithContinents", allCountriesWithContinents);
     db.writeDataToDb("allCountriesWithPopulation", allCountriesWithPopulation);
     db.writeDataToDb("allCitiesWithPopulation", allCitiesWithPopulation);
-    db.getLocalStorageSize();
+    // db.getLocalStorageSize();
 }
 
 // ============================================
