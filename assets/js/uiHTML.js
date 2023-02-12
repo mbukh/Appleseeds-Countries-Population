@@ -1,3 +1,9 @@
+// =============================================
+//
+// HTML UI Elements
+//
+// =============================================
+
 function updateContinentsButtons(continents) {
     const continentsButtons = newElementsFromList(continents, {
         type: "a",
