@@ -38,23 +38,23 @@ function initChart(ctx, config) {
     return new Chart(ctx, config);
 }
 
-function cityChartFromData(countryData) {
+function cityChartFromData(cityData) {
     const config = {
-        type: countryData["populationCounts"].length > 1 ? "line" : "bar",
+        type: cityData["populationCounts"].length > 1 ? "line" : "bar",
         data: {
-            labels: countryData["populationCounts"].map((data) => data["year"]),
+            labels: cityData["populationCounts"].map((data) => data["year"]),
             datasets: [
                 {
                     label: "population",
-                    data: countryData["populationCounts"].map((data) =>
+                    data: cityData["populationCounts"].map((data) =>
                         Math.round(data["value"])
                     ),
                     borderColor: uiHTML.generateColorFromString(
-                        countryData["city"],
+                        cityData["city"],
                         0.8
                     ),
                     backgroundColor: uiHTML.generateColorFromString(
-                        countryData["city"],
+                        cityData["city"],
                         0.3
                     ),
                     fill: true,
@@ -66,7 +66,7 @@ function cityChartFromData(countryData) {
             ],
         },
         options: {
-            plugins: { title: { text: countryData["city"], display: true } },
+            plugins: { title: { text: cityData["city"], display: true } },
             pointBackgroundColor: "#fff",
             maintainAspectRatio: false,
         },
