@@ -4,9 +4,11 @@ import db from "./db.js";
 // ============================================
 //
 // Get data from localStorage if exists
-// else check from API
+// else get it from API
 //
 // ============================================
+
+// Module "global" variables (comes with functions closure)
 let allCountriesWithContinents;
 let allCountriesWithPopulation;
 let allCitiesWithPopulation;
@@ -29,13 +31,16 @@ async function loadAllDataFromAPIs() {
             allCountriesWithContinents = results[0];
             allCountriesWithPopulation = results[1];
             allCitiesWithPopulation = results[2];
-            return 2;
+            console.log("Data loaded fro all APIs");
+            saveDataToLocalStorage();
+            console.log("Data saved to local database");
         } else {
-            console.info("Api call failed.");
+            console.info("API failed");
             return 0;
         }
     }
-    console.log("Data loaded from local database");
+    console.log("Working with data from local database");
+    db.getLocalStorageSize();
     return 1;
 }
 

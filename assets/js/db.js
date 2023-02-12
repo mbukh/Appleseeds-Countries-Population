@@ -1,5 +1,11 @@
+// =======================
+//
+// Use local storage as database
+// data is compressed via
 // LZString from https://github.com/pieroxy/lz-string
 // imported in html
+//
+// =======================
 
 function writeDataToDb(key, data, force = false) {
     if (!force && key in localStorage) return null;

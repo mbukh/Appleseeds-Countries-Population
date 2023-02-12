@@ -12,14 +12,12 @@ import mapData from "./map.js";
 uiHTML.showLoadingScreen();
 
 try {
+    // prepare data
     const resCode = await dataManager.loadAllDataFromAPIs();
-    switch (resCode) {
-        case 0:
-            throw new Error("Failed to load data. Connection error.");
-        case 2:
-            dataManager.saveDataToLocalStorage();
-    }
+    if (!resCode) throw new Error("Failed to load data. Connection error.");
     uiHTML.removeLoadingScreen();
+    // start here
+    initEvents();
 } catch (error) {
     uiHTML.showLoadingErrorMessage(error);
     // Stop program from running
@@ -28,26 +26,42 @@ try {
 
 // =============================================
 //
+// init
+//
+// =============================================
+
+function initEvents() {
+    doMap();
+    doContinents();
+    activateContinentsButtons();
+}
+
+// =============================================
+//
 // Event listeners
 //
 // =============================================
 
-window.addEventListener("load", doMap);
+// clear database
+document
+    .querySelector(".clearDB a")
+    .addEventListener("click", () => localStorage.clear());
+//
 
-window.addEventListener("load", doContinents);
-
-window.addEventListener("load", function activateContinentsButtons() {
+function activateContinentsButtons() {
     document.querySelector("#continents").addEventListener("click", (e) => {
         if (!e.target.classList.contains("continent")) return;
+        uiHTML.selectElement(e.target);
         console.log(`Getting countries of ${e.target.innerText}`);
         doCountries(e.target.innerText);
         uiHTML.clearElement(document.querySelector("#cities"));
     });
-});
+}
 
 function activateCountriesButtons() {
     document.querySelector("#countries").addEventListener("click", (e) => {
         if (!e.target.classList.contains("name")) return;
+        uiHTML.selectElement(e.target.parentElement);
         console.log(`Getting cities of ${e.target.parentElement.dataset.name}`);
         doCities(e.target.parentElement.dataset.name);
     });
@@ -64,20 +78,29 @@ function activateCountriesButtons() {
 function activateCitiesButtons() {
     document.querySelector("#cities").addEventListener("click", (e) => {
         if (!e.target.classList.contains("name")) return;
+        uiHTML.selectElement(e.target.parentElement);
         showCityChart(e.target.parentElement.dataset.name);
     });
 }
 
 // =============================================
 //
-// Event handlers
+// Events handlers
 //
 // =============================================
 
 // map
 function doMap() {
     globalThis.simplemaps_worldmap.hooks.click_state = function (id) {
-        showCountryChart(simplemaps_worldmap_mapdata.state_specific[id].name);
+        const countryName = simplemaps_worldmap_mapdata.state_specific[id].name;
+        document
+            .querySelector(".country.selected")
+            ?.classList.remove("selected");
+        console.log(`Getting population of ${countryName}`);
+        showCountryChart(countryName);
+        console.log(`Getting cities of ${countryName}`);
+        doCities(countryName);
+        uiHTML.clearElement(document.querySelector("#countries"));
     };
     mapData.initMapInfo();
     mapData.createMap();

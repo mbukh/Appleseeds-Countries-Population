@@ -2768,19 +2768,14 @@ Use pursuant to license agreement at https://simplemaps.com/license */
                         a++
                     )
                         n.push(
-                            i
-                                .path(s)
-                                .attr({
-                                    stroke: e.color,
-                                    fill: e.fill ? e.color : "none",
-                                    "stroke-linejoin": "round",
-                                    "stroke-linecap": "round",
-                                    "stroke-width": +(
-                                        (e.width / r) *
-                                        a
-                                    ).toFixed(3),
-                                    opacity: +(e.opacity / r).toFixed(3),
-                                })
+                            i.path(s).attr({
+                                stroke: e.color,
+                                fill: e.fill ? e.color : "none",
+                                "stroke-linejoin": "round",
+                                "stroke-linecap": "round",
+                                "stroke-width": +((e.width / r) * a).toFixed(3),
+                                opacity: +(e.opacity / r).toFixed(3),
+                            })
                         );
                     return n.insertBefore(this).translate(e.offsetx, e.offsety);
                 });
@@ -10248,7 +10243,7 @@ var simplemaps_worldmap_mapinfo = {
                             var l = i.states[s],
                                 c = ts[l];
                             if (!c) {
-                                console.log(l + " does not exist");
+                                // console.log(l + " does not exist");
                                 continue;
                             }
                             if (c.sm.region) {
@@ -11678,16 +11673,14 @@ var simplemaps_worldmap_mapinfo = {
                                         "fill-opacity": 0,
                                         cursor: "pointer",
                                     }),
-                                r = eM
-                                    .path(p.arrow)
-                                    .attr({
-                                        stroke: eX,
-                                        "stroke-width": 1.5,
-                                        "stroke-opacity": 1,
-                                        fill: eY,
-                                        "fill-opacity": 1,
-                                        cursor: "pointer",
-                                    });
+                                r = eM.path(p.arrow).attr({
+                                    stroke: eX,
+                                    "stroke-width": 1.5,
+                                    "stroke-opacity": 1,
+                                    fill: eY,
+                                    "fill-opacity": 1,
+                                    cursor: "pointer",
+                                });
                             (eN = ez.set()).push(n, r),
                                 eN.transform("S" + to + "," + to + ",0,0 T0,0");
                         }
@@ -11700,49 +11693,41 @@ var simplemaps_worldmap_mapinfo = {
                                     var t = p.plus,
                                         o = p.minus,
                                         i = p.rounded_box,
-                                        n = eH
-                                            .path(i)
-                                            .attr({
-                                                fill: G,
-                                                "stroke-width": 1,
-                                                stroke: ev,
-                                                "stroke-opacity": 1,
-                                                "fill-opacity": ek,
-                                                cursor: "pointer",
-                                            }),
-                                        r = eH
-                                            .path(t)
-                                            .attr({
-                                                "stroke-width": 0,
-                                                "stroke-opacity": 0,
-                                                fill: ev,
-                                                "fill-opacity": 1,
-                                                opacity: 1,
-                                                cursor: "pointer",
-                                            });
+                                        n = eH.path(i).attr({
+                                            fill: G,
+                                            "stroke-width": 1,
+                                            stroke: ev,
+                                            "stroke-opacity": 1,
+                                            "fill-opacity": ek,
+                                            cursor: "pointer",
+                                        }),
+                                        r = eH.path(t).attr({
+                                            "stroke-width": 0,
+                                            "stroke-opacity": 0,
+                                            fill: ev,
+                                            "fill-opacity": 1,
+                                            opacity: 1,
+                                            cursor: "pointer",
+                                        });
                                     (eD = ez.set()).push(n, r);
                                     var a = "S" + to + "," + to + ",0,0 T0,0";
                                     eD.transform(a);
-                                    var s = eH
-                                            .path(i)
-                                            .attr({
-                                                fill: G,
-                                                "stroke-width": 1,
-                                                stroke: ev,
-                                                "stroke-opacity": 1,
-                                                "fill-opacity": ek,
-                                                cursor: "pointer",
-                                            }),
-                                        l = eH
-                                            .path(o)
-                                            .attr({
-                                                "stroke-width": 0,
-                                                "stroke-opacity": 0,
-                                                fill: ev,
-                                                "fill-opacity": 1,
-                                                opacity: 1,
-                                                cursor: "pointer",
-                                            });
+                                    var s = eH.path(i).attr({
+                                            fill: G,
+                                            "stroke-width": 1,
+                                            stroke: ev,
+                                            "stroke-opacity": 1,
+                                            "fill-opacity": ek,
+                                            cursor: "pointer",
+                                        }),
+                                        l = eH.path(o).attr({
+                                            "stroke-width": 0,
+                                            "stroke-opacity": 0,
+                                            fill: ev,
+                                            "fill-opacity": 1,
+                                            opacity: 1,
+                                            cursor: "pointer",
+                                        });
                                     (eR = ez.set()).push(s, l);
                                     var a =
                                         "S" +

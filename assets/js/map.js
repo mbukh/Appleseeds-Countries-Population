@@ -1,7 +1,11 @@
 import dataManager from "./dataManager.js";
 import uiHTML from "./uiHTML.js";
 
+// =============================
+//
 // https://simplemaps.com/docs/
+//
+// =============================
 
 function createMap() {
     uiHTML.newDOMElement("div", {

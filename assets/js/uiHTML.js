@@ -97,7 +97,7 @@ function showLoadingScreen() {
 
 function removeLoadingScreen() {
     document.querySelector("#loadingScreen").classList.add("hide");
-    setTimeout(() => document.querySelector("#loadingScreen").remove(), 600);
+    setTimeout(() => document.querySelector("#loadingScreen").remove(), 700);
 }
 
 function showSpinner(parent) {
@@ -165,6 +165,13 @@ function clearElement(element) {
     if (element) element.innerHTML = "";
 }
 
+function selectElement(el) {
+    Array.from(el.parentElement.children).forEach((el) =>
+        el.classList.remove("selected")
+    );
+    el.classList.add("selected");
+}
+
 function generateColorFromString(string, opacity = 1) {
     // https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
     let hash = 0;
@@ -192,4 +199,5 @@ export default {
     showLoadingScreen,
     removeLoadingScreen,
     showLoadingErrorMessage,
+    selectElement,
 };
