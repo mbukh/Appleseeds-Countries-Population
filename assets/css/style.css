@@ -6,6 +6,13 @@ html {
     font-family: "Roboto", sans-serif;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
 .clearDB {
     position: absolute;
     display: inline-block;
@@ -20,8 +27,22 @@ a.selected {
     border: none !important;
 }
 
+.toponyms-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.chart-container {
+    width: 100%;
+    flex: 1;
+}
+.map-container {
+    width: 100%;
+}
+
 div#map {
-    max-width: 800px;
+    max-width: 700px;
     margin: auto;
 }
 
@@ -32,6 +53,7 @@ div#cities {
     flex-wrap: wrap;
     justify-content: space-around;
     border: 1px solid #ccc;
+    background: #eee;
     margin: 0.1em;
     position: relative;
 }
@@ -42,15 +64,8 @@ div#cities {
     max-height: 15.3em;
     overflow-x: scroll;
 }
-div#countries {
-    width: 50%;
-    height: 100%;
-    float: left;
-}
 div#cities {
-    width: 48%;
-    height: 100%;
-    float: right;
+    max-height: 10em;
 }
 
 a.continent {

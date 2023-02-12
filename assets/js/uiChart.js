@@ -8,29 +8,23 @@ import uiHTML from "./uiHTML.js";
 //
 // =============================================
 
+// module global variable (function closure)
 let myChart, chartCtx;
 
 function updateChart(config) {
-    if (myChart?.ctx && config.type !== myChart.config.type) {
-        console.log(config.type, myChart);
-        myChart.destroy();
-    }
+    // to force build new chart to fit screen area
+    if (myChart?.ctx) myChart.destroy();
+    return setNewChart(config);
 
-    if (!myChart?.ctx) return setNewChart(config);
-
-    myChart.config.options = config.options;
-    myChart.config.data = config.data;
-    myChart.update();
-
-    // myChart.reset();
-    // console.log(config);
+    // myChart.config.options = config.options;
+    // myChart.config.data = config.data;
     // myChart.update();
 }
 
 function setNewChart(config) {
     if (!document.querySelector("#myChart")) {
         chartCtx = uiHTML.newDOMElement("canvas", {
-            parent: document.body,
+            parent: document.querySelector(".chart-container"),
             id: "myChart",
         });
     }
@@ -74,32 +68,37 @@ function cityChartFromData(countryData) {
         options: {
             plugins: { title: { text: countryData["city"], display: true } },
             pointBackgroundColor: "#fff",
+            maintainAspectRatio: false,
         },
     };
     updateChart(config);
 }
 
-function countryChartFromData(countryData) {
+function countryChartFromData(countryData, countryName) {
+    countryData = countryData
+        .sort((a, b) => b[1][0]["value"] - a[1][0]["value"])
+        .slice(0, 15);
+    if (!countryData.length) return false;
     const config = {
-        type: countryData["populationCounts"].length > 1 ? "line" : "bar",
+        type: "bar",
         data: {
-            labels: countryData["populationCounts"].map((data) => data["year"]),
+            labels: countryData.map((data) => data[0]),
             datasets: [
                 {
-                    label: "population",
-                    data: countryData["populationCounts"].map((data) =>
-                        Math.round(data["value"])
+                    label: `cities with biggest population`,
+                    data: countryData.map((data) =>
+                        Math.round(data[1][0]["value"])
                     ),
-                    borderColor: uiHTML.generateColorFromString(
-                        countryData["country"],
+                    borderColor: countryData.map(
+                        (data) => uiHTML.generateColorFromString(data[0]),
                         0.8
                     ),
-                    backgroundColor: uiHTML.generateColorFromString(
-                        countryData["country"],
+                    backgroundColor: countryData.map(
+                        (data) => uiHTML.generateColorFromString(data[0]),
                         0.3
                     ),
-                    fill: true,
-                    radius: 8,
+                    fill: false,
+                    radius: 2,
                     hoverRadius: 12,
                     borderWidth: 1,
                     hoverBorderWidth: 2,
@@ -107,11 +106,16 @@ function countryChartFromData(countryData) {
             ],
         },
         options: {
-            plugins: { title: { text: countryData["country"], display: true } },
+            plugins: { title: { text: countryName, display: true } },
             pointBackgroundColor: "#fff",
+            maintainAspectRatio: false,
         },
     };
     updateChart(config);
+}
+
+function destroyChart() {
+    if (myChart?.ctx) myChart.destroy();
 }
 
 // function addData(labels, dataset) {
@@ -130,4 +134,9 @@ function countryChartFromData(countryData) {
 //     myChart.update();
 // }
 
-export default { updateChart, cityChartFromData, countryChartFromData };
+export default {
+    updateChart,
+    cityChartFromData,
+    countryChartFromData,
+    destroyChart,
+};

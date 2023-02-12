@@ -51,6 +51,7 @@ document
 function activateContinentsButtons() {
     document.querySelector("#continents").addEventListener("click", (e) => {
         if (!e.target.classList.contains("continent")) return;
+        uiChart.destroyChart();
         uiHTML.selectElement(e.target);
         console.log(`Getting countries of ${e.target.innerText}`);
         doCountries(e.target.innerText);
@@ -61,6 +62,7 @@ function activateContinentsButtons() {
 function activateCountriesButtons() {
     document.querySelector("#countries").addEventListener("click", (e) => {
         if (!e.target.classList.contains("name")) return;
+        uiChart.destroyChart();
         uiHTML.selectElement(e.target.parentElement);
         console.log(`Getting cities of ${e.target.parentElement.dataset.name}`);
         doCities(e.target.parentElement.dataset.name);
@@ -96,10 +98,14 @@ function doMap() {
         document
             .querySelector(".country.selected")
             ?.classList.remove("selected");
+        document.querySelector(".city.selected")?.classList.remove("selected");
+        document
+            .querySelector(".continent.selected")
+            ?.classList.remove("selected");
         console.log(`Getting population of ${countryName}`);
         showCountryChart(countryName);
-        console.log(`Getting cities of ${countryName}`);
-        doCities(countryName);
+        // console.log(`Getting cities of ${countryName}`);
+        // doCities(countryName);
         uiHTML.clearElement(document.querySelector("#countries"));
     };
     mapData.initMapInfo();
@@ -120,9 +126,10 @@ function doCountries(continent) {
 }
 
 function showCountryChart(countryName) {
-    console.log(`Getting population of ${countryName}`);
-    const countryData = dataManager.getPopulationOfCountry(countryName);
-    uiChart.countryChartFromData(countryData);
+    // console.log(`Getting population of ${countryName}`);
+    // console.log(`Getting cities of ${countryName}`);
+    const countryData = dataManager.getCitiesOfCountry(countryName);
+    uiChart.countryChartFromData(countryData, countryName);
 }
 
 // cities

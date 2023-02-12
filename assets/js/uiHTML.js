@@ -4,7 +4,7 @@ function updateContinentsButtons(continents) {
         classList: ["continent"],
     });
     const htmlContinentsDiv = newDOMElement("div", {
-        parent: document.body,
+        parent: document.querySelector(".toponyms-container"),
         id: "continents",
     });
     htmlContinentsDiv.append(...continentsButtons);
@@ -38,7 +38,7 @@ function updateCountriesButtons(countries) {
             </div>`
     );
     newDOMElement("div", {
-        after: document.querySelector("#continents"),
+        before: document.querySelector("#continents"),
         id: "countries",
     });
     document.querySelector("#countries").append(...countriesButtons);
@@ -52,12 +52,12 @@ function updateCitiesButtons(cities) {
             classList: ["city"],
             datasetCallback: (city) => ({
                 "data-name": city[0],
-                "data-year": city[1][city[1].length - 1]["year"],
+                "data-year": city[1][0]["year"],
             }),
         },
         (city) =>
             `<span class="name">${city[0]}</span> (<span class="year">${
-                city[1][city[1].length - 1]["year"]
+                city[1][0]["year"]
             }</span>)
             <div class="drop-down">
                 ${city[1]
@@ -73,7 +73,7 @@ function updateCitiesButtons(cities) {
         document.querySelector("#cities").innerHTML = "";
     } else {
         newDOMElement("div", {
-            after: document.querySelector("#countries"),
+            before: document.querySelector("#countries"),
             id: "cities",
         });
     }
@@ -132,12 +132,13 @@ function showLoadingErrorMessage(message) {
 
 function newDOMElement(
     type,
-    { parent = null, after = null, id = null, classList = [] }
+    { parent = null, after = null, before = null, id = null, classList = [] }
 ) {
     const newEl = document.createElement(type);
     newEl.id = id;
     if (classList.length) newEl.className = classList.join(" ");
     if (after) after.after(newEl);
+    if (before) before.before(newEl);
     else parent?.appendChild(newEl);
     return newEl;
 }
